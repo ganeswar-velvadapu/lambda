@@ -39,13 +39,13 @@ btn.addEventListener("click",()=>{
           let ctx = canvas.getContext('2d');
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          ctx.font = '30px Impact';
+          ctx.font = '20px Impact';
           ctx.fillStyle = 'white';
           ctx.strokeStyle = 'black';
-          ctx.fillText(topText.value, 90, 80);
-          ctx.strokeText(topText.value, 90, 80);
-          ctx.fillText(botText.value, 150, 80);
-          ctx.strokeText(botText.value, 150, 80);
+          ctx.fillText(topText.value, 70, 50);
+          ctx.strokeText(topText.value, 70, 50);
+          ctx.fillText(botText.value, 150, 90);
+          ctx.strokeText(botText.value, 150, 90);
         };
   }
   else if(option.value == "Buff Doge vs Cheems"){
@@ -59,10 +59,10 @@ btn.addEventListener("click",()=>{
           ctx.font = '30px Impact';
           ctx.fillStyle = 'white';
           ctx.strokeStyle = 'black';
-          ctx.fillText(topText.value, 90, 80);
-          ctx.strokeText(topText.value, 90, 80);
-          ctx.fillText(botText.value, 150, 80);
-          ctx.strokeText(botText.value, 150, 80);
+          ctx.fillText(topText.value, 50, 30);
+          ctx.strokeText(topText.value, 50, 30);
+          ctx.fillText(botText.value, 190, 60);
+          ctx.strokeText(botText.value, 190, 60);
         };
 }
 })
