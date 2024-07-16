@@ -29,4 +29,3 @@ A simple web application generate background gradients based on the gradient typ
 
 3. Click the "Generate" button to see the gradient applied to the preview area.
 
-Contributions are welcome!

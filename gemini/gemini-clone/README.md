@@ -38,7 +38,7 @@ This project is an attempt to clone the Google Gemini AI interface. The applicat
     ```
 2. Open your browser and go to `http://localhost:5173`
 
-Contributions are welcome!
+
 
 
 

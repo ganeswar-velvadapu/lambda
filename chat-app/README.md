@@ -39,5 +39,5 @@ This is a simple chat application built with Node.js, Express, and Socket.io. It
 
 2. Open your browser and go to `http://localhost:3000`
 
-Contributions are welcome!
+
 

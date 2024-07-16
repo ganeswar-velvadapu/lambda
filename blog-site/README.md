@@ -37,4 +37,3 @@ This is a simple blog website built with Node.js, Express, Mongoose, EJS, and ot
 
 2. Open your browser and go to `http://localhost:8080`
 
-Contributions are welcome!
