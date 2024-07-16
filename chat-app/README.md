@@ -33,7 +33,7 @@ This is a simple chat application built with Node.js, Express, and Socket.io. It
 
 1. Start the server
     ```
-    npm run dev
+    npm start
     ```
    This will start the server using Nodemon.
 
