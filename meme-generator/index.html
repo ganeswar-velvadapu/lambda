@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Meme Generator with Templates</title>
+</head>
+<body>
+    <div class="main">
+        <h1>Meme Generator</h1>
+
+    <div class="template-select">
+        <label for="template">Choose a Template</label>
+        <select id="template">
+            <option value="drake-hotline-bling">Drake Hotline Bling</option>
+            <option value="Left Exit 12 Off Ramp">Left Exit 12 Off Ramp</option>
+            <option value="Buff Doge vs Cheems">Buff Doge vs Cheems</option>
+        </select>
+    </div>
+    <div class="text-input">
+        <label for="topText">Top Text : </label>
+        <input type="text" id="topText" placeholder="Top Text">
+        <label for="botText">Bottom Text : </label>
+        <input type="text" id="botText" placeholder="Bottom Text">
+    </div>
+
+    <button id="gen">Generate Meme</button>
+    <canvas id="memeCanvas" width="300" height="300"></canvas>  
+    </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<% layout("/layouts/boilerplate") -%>
+<body>
+  <h2>All Blogs</h2>
+  <% for(let blog of blogData){ %>
+  <div class="card mt-3">
+    <div class="card-header">
+      <%= blog.special_title %>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title"><%= blog.title%></h5>
+      <p class="card-text">
+        <%= blog.special_description %>
+      </p>
+      <a href="/<%= blog._id  %>" class="btn btn-primary">View More</a>
+    </div>
+  </div>
+  <%}%>
+</body>

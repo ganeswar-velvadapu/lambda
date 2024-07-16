@@ -1,0 +1,25 @@
+footer {
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    text-align: center;
+    border: 0.1px solid rgb(139, 137, 137);
+    background-color: white;
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+  .card-header{
+      text-align: center;
+      font-weight: bold;
+  }
+  .eachblog{
+    padding: 1rem;
+  }
+  .btn{
+    margin: 0.5rem;
+  }
+  
+  .eandd{
+    display: flex;
+  }

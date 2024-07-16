@@ -1,0 +1,26 @@
+<% layout("/layouts/boilerplate")  -%>
+<body>
+    <form action="/" method="POST">
+      <div class="input-group mt-3 mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default" >Title</span>
+        <input type="text" class="form-control" name="title" required>
+      </div>
+      <div class="form-floating">
+        <textarea class="form-control mb-3 p-2" style="height: 100px" name="description" required></textarea>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Author</span>
+        <input type="text" class="form-control" name="author" required>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Special Title</span>
+        <input type="text" class="form-control" name="special_title" required>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Special Description</span>
+        <input type="text" class="form-control" name="special_description">
+      </div>
+      
+      <button type="submit" class="btn btn-secondary">Add</button>
+    </form>
+</body>
