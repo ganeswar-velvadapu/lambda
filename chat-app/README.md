@@ -37,9 +37,9 @@ This is a simple chat application built with Node.js, Express, and Socket.io. It
     ```
    This will start the server using Nodemon.
 
-2. Open your browser and go to `http://localhost:3000`and register yourself as user1.
+2. Open your browser and go to `http://localhost:3000` and register yourself as user1.
 
-3. Open another tab in the browser and go to `http://localhost:3000`and register yourself as user2.
+3. Open another tab in the browser and go to `http://localhost:3000` and register yourself as user2.
 
 4. Enjoy Chatting
 
