@@ -6,6 +6,10 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const Comment = require("./models/commentSchema");
+const User = require("./models/userSchema");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -13,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(cookieParser());
 
 async function main() {
   await mongoose.connect("mongodb://localhost:27017/Blog");
@@ -32,6 +37,12 @@ app.listen(8080, () => {
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.cookies.token ? true : false;
+  next();
+});
+
 //Home Route(Show all blogs)
 app.get("/", async (req, res, next) => {
   try {
@@ -42,12 +53,12 @@ app.get("/", async (req, res, next) => {
   }
 });
 //create new blog
-app.get("/new", (req, res) => {
+app.get("/new",checkToken, (req, res) => {
   res.render("./blogs/newblog");
 });
-app.post("/", async (req, res, next) => {
+app.post("/", checkToken, async (req, res, next) => {
   try {
-    let { title, description, author, special_title, special_description } =
+    let { title, description, author,special_title, special_description } =
       req.body;
     let newBlog = Blog({
       title,
@@ -64,7 +75,7 @@ app.post("/", async (req, res, next) => {
 });
 
 // Delete Blog
-app.delete("/:id", async (req, res, next) => {
+app.delete("/:id", checkToken, async (req, res, next) => {
   try {
     let { id } = req.params;
     await Blog.findByIdAndDelete(id);
@@ -75,7 +86,7 @@ app.delete("/:id", async (req, res, next) => {
 });
 
 //Edit and Update Blog
-app.post("/:id/editblog", async (req, res, next) => {
+app.post("/:id/editblog", checkToken, async (req, res, next) => {
   try {
     let { id } = req.params;
     let singledata = await Blog.findById(id);
@@ -95,6 +106,78 @@ app.put("/:id", async (req, res, next) => {
     next(err);
   }
 });
+//Auth routes
+app.get("/signup", (req, res) => {
+  try {
+    res.render("./blogs/signup");
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.get("/login", (req, res) => {
+  try {
+    res.render("./blogs/login");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/signup", async (req, res) => {
+  try {
+    let { username, email, password } = req.body;
+    const user = await User.findOne({ email: email });
+    if (user) {
+      res.send("User already exists");
+    }
+    const hashPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      username: username,
+      email: email,
+      password: hashPassword,
+    });
+    await newUser.save();
+    const payload = {
+      id: newUser.id,
+      email: newUser.email,
+    };
+    const token = generateToken(payload);
+    res.cookie("token", token, { httpOnly: true });
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    let { email, password } = req.body;
+    const user = await User.findOne({ email: email });
+    if (user) {
+      const passcode = await bcrypt.compare(password, user.password);
+      if (passcode) {
+        const payload = {
+          id: user.id,
+          email: user.email,
+        };
+        const token = generateToken(payload);
+        res.cookie("token", token, { httpOnly: true });
+        return res.redirect("/");
+      } else {
+        return res.send("Password is wrong");
+      }
+    }
+    res.send("User does not exist");
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+app.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.redirect('/');
+});
+
+
 // Show Induvidual Blog
 app.get("/:id", async (req, res, next) => {
   try {
@@ -107,11 +190,11 @@ app.get("/:id", async (req, res, next) => {
 });
 
 //Comment Route
-app.post("/:id/comment", async (req, res, next) => {
+app.post("/:id/comment", checkToken, async (req, res, next) => {
   try {
     const { id } = req.params;
     let blog = await Blog.findById(id);
-    let { comment } = req.body;
+    let { comment} = req.body;
     let newComment = new Comment({
       comment: comment,
     });
@@ -124,18 +207,40 @@ app.post("/:id/comment", async (req, res, next) => {
   }
 });
 
-//Delete comment route
-app.delete("/:id/comment/:commentId", async (req, res,next) => {
+// Delete comment route
+app.delete("/:id/comment/:commentId", checkToken, async (req, res, next) => {
   try {
     let { id, commentId } = req.params;
     await Blog.findByIdAndUpdate(id, { $pull: { comments: commentId } });
-    await Blog.findByIdAndDelete(commentId);
-  
+    await Comment.findByIdAndDelete(commentId);  // Corrected this line to use Comment model
+
     res.redirect(`/${id}`);
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
+
+
+function generateToken(userData) {
+  const token = jwt.sign(userData, "ganesh12345");
+  return token;
+}
+
+function checkToken(req, res, next) {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      res.redirect("/login");
+    }
+    const decode = jwt.verify(token, "ganesh12345");
+    req.user = decode;
+    next();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 
 app.use((err, req, res, next) => {
   res.send("Something went wrong");
